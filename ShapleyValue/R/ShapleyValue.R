@@ -2,22 +2,14 @@
 #
 # This is a package for relative importance calculation based on Shapley Value Regression.
 #
-# @param y is the data set of dependent variable
-# @param x is the data set of independent variables
+#' @param y is the data set of dependent variable
+#' @param x is the data set of independent variables
 #
 # In this package, users do not need to point out the number of independent variables, it will be caught automatically while inputting x.
 #
-# @examples
-# shapleyvalue(y,x)
 
-library(tidyverse)
-library(skimr)
-library(MASS)
-library(foreign)
-library(haven)
-library(kableExtra)
 
-error <- function(message) {
+error2 <- function(message) {
   stop(simpleError(message))
 }
 
@@ -31,7 +23,7 @@ shapleyvalue <- function(y,x){
   name <- colnames(x)
 
   if (k==1){
-    error("No need for using shapley regression!")
+    error2("No need for using shapley regression!")
   }
   else if (k==2){
     for (i in 1:k){

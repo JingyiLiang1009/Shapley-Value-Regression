@@ -1,0 +1,51 @@
+---
+title: "Shapley Value Regression"
+author: "Jingyi Liang"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ShapleyValue}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r include = FALSE}
+library(tidyverse)
+library(MASS)
+library(kableExtra)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+The basic idea of calculating the importance of attributes in a linear regression is according to the coefficients in the regression. However, when we put too many independent variables to regress, we can not promise that all those independent variables are independently distributed, commonly speaking. On other words, it may have great possibility that several attributes are collinearity, which also known as highly correlated. In an example context, we can easily remove the highly correlated attributes and then do the regression. However, in real world business cases, all the attributes we selected are important and meaningful, thus we can not remove the attributes which are highly correlated randomly. Therefore, we need to find out how to calculating the importance of attributes when several attributes are collinearity.
+
+Shapley Value regression is also called Shapley regression, Shapley Value analysis, Kruskal analysis, and dominance analysis, and incremental R-squared analysis. Apart from using it while independent variables are moderately to highly correlated in linear regression, it also can be used when computing the contribution of each predictors in machine learning.
+
+This package only has one function `shapleyvalue`, and you can use it to analyze the relative importance of attributes in linear regression.
+
+## A simple example
+
+Here, we use the bulit-in dataset `Boston` in package `MASS`. In this demo, `medv` as dependent variable, `nox`, `rm`, `age`,	`dis` as four predictors, and we want to find out the importance of each predictor.
+
+```{r setup}
+library(ShapleyValue)
+```
+
+```{r,echo=TRUE}
+data <- Boston
+head(data) %>%
+  kbl() %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+```
+
+```{r,echo=TRUE, warning=FALSE}
+y <- data$medv
+x <- as.data.frame(data[,5:8])
+value <- shapleyvalue(y,x)
+value %>%
+  kbl() %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+```
+
